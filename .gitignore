@@ -22,7 +22,7 @@ ExportedObj/
 *.booproj
 *.svd
 *.pdb
-/Assets/Video.mp4
+/Assets/Video/VideoQuad.mp4
 
 # Unity3D generated meta files
 *.pidb.meta
