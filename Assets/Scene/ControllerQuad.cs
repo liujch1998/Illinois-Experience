@@ -9,6 +9,10 @@ public class ControllerQuad : Photon.PunBehaviour {
 	private int playerIndex;
 	private const float RADIUS = 5.0f;
 	private const float ANGLE =  0.4f * (2f * Mathf.PI);
+	private GameObject frisbee;
+	private bool frisbee_ismine = false;
+	private Vector3 frisbee_position;
+	private Vector3 frisbee_velocity;
 
 	void Start () {
 		PhotonNetwork.logLevel = PhotonLogLevel.Full;
@@ -16,8 +20,50 @@ public class ControllerQuad : Photon.PunBehaviour {
 	}
 	
 	void Update () {
+		// create a new frisbee in your right hand when index button released
+		if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger) && frisbee_ismine == false) {
+			frisbee_ismine = true;
+			frisbee = PhotonNetwork.Instantiate("Frisbee", Vector3.zero, Quaternion.identity, 0);
+			foreach (Transform t in avatar.GetComponentsInChildren<Transform>()) {
+				if (t.gameObject.name == "RightHandAnchor") {
+					frisbee.transform.parent = t;
+					frisbee.transform.localPosition = Vector3.zero;
+					frisbee.transform.localRotation = Quaternion.identity;
+					break;
+				}
+			}
+			frisbee_position = frisbee.transform.position;
+		}
+
+		// record velocity of frisbee
+		if (frisbee_ismine) {
+			frisbee_velocity = (frisbee.transform.position - frisbee_position) / Time.deltaTime;
+			frisbee_position = frisbee.transform.position;
+		} else if (frisbee != null) {
+			frisbee_velocity += new Vector3(0f, -1f * Time.deltaTime, 0f);  // gravity acceleration
+			frisbee.transform.position += frisbee_velocity * Time.deltaTime;
+			if (frisbee.transform.position.y < 0f) {
+				frisbee_velocity = Vector3.zero;
+			}
+		}
+
+		// release the frisbee when A button released
+		if (OVRInput.GetUp(OVRInput.Button.One) && frisbee_ismine == true) {
+			frisbee_ismine = false;
+			frisbee.transform.parent = null;
+		}
+
+		// sync Avatar_obs position with camera
 		if (avatar) {
-			GameObject.Find("CanvasQuad").transform.position = avatar.transform.position;
+			foreach (Transform t in avatar.GetComponentsInChildren<Transform>()) {
+				if (t.gameObject.name == "Avatar_obs") {
+					foreach (Transform s in avatar.GetComponentsInChildren<Transform>()) {
+						if (s.gameObject.name == "CenterEyeAnchor") {
+							t.position = s.position;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -26,13 +72,6 @@ public class ControllerQuad : Photon.PunBehaviour {
 		roomOptions.IsVisible = true;
 		roomOptions.MaxPlayers = 5;
 		PhotonNetwork.JoinOrCreateRoom("Quad", roomOptions, TypedLobby.Default);
-	/*	PhotonNetwork.JoinRandomRoom();
-	}
-
-	void OnPhotonJoinFailed () {
-		PhotonNetwork.CreateRoom("Quad");
-		PhotonNetwork.CreateRoom(null);
-	*/
 	}
 
 	public override void OnJoinedRoom () {
@@ -40,7 +79,5 @@ public class ControllerQuad : Photon.PunBehaviour {
 		Vector3 position = new Vector3(RADIUS * Mathf.Cos(ANGLE * playerIndex), 0f, RADIUS * Mathf.Sin(ANGLE * playerIndex));
 		Quaternion rotation = Quaternion.Euler(0f, ANGLE * playerIndex, 0f);
 		avatar = PhotonNetwork.Instantiate("Avatar", position, rotation, 0);
-	//	GameObject.FindGameObjectWithTag("MainCamera").transform.SetParent(avatar.transform);
-	//	GameObject.Find("CanvasQuad").transform.SetParent(avatar.transform);
 	}
 }
