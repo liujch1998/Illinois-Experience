@@ -575,6 +575,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33298bc34f8ae1a438ed75077efc3c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audio_creat: {fileID: 8300000, guid: e7d669e0ecfba4343bd9566ad7c83360, type: 3}
+  audio_throw: {fileID: 8300000, guid: e7d669e0ecfba4343bd9566ad7c83360, type: 3}
+  audio_catch: {fileID: 8300000, guid: e7d669e0ecfba4343bd9566ad7c83360, type: 3}
 --- !u!135 &135111695596740932
 SphereCollider:
   m_ObjectHideFlags: 1
