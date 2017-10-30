@@ -35,7 +35,7 @@ public class ControllerQuad : Photon.PunBehaviour {
 
 	public override void OnJoinedRoom () {
 		playerIndex = PhotonNetwork.playerList.Length - 1;
-		Vector3 position = new Vector3(RADIUS * Mathf.Cos(ANGLE * playerIndex), 0f, RADIUS * Mathf.Sin(ANGLE * playerIndex));
+		Vector3 position = new Vector3(RADIUS * Mathf.Cos(ANGLE * playerIndex), 1f, RADIUS * Mathf.Sin(ANGLE * playerIndex));
 		Quaternion rotation = Quaternion.Euler(0f, ANGLE * playerIndex, 0f);
 		avatar = Instantiate(avatar_prefab, position, rotation).gameObject;
 		avatar_obs = PhotonNetwork.Instantiate("Avatar_obs", position, rotation, 0);

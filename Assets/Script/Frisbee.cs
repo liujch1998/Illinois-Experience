@@ -24,7 +24,7 @@ public class Frisbee : Photon.PunBehaviour {
 			velocity += new Vector3(0f, -1f * Time.deltaTime, 0f);  // gravity acceleration
 			position += velocity * Time.deltaTime;
 			transform.position = position;
-			if (position.y <= 0f) {  // hit ground
+			if (position.y <= 0f && velocity.y <= 0f) {  // hit ground
 				velocity.y *= -0.5f;  // bounce back
 			}
 		}
