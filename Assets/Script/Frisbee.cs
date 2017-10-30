@@ -26,7 +26,10 @@ public class Frisbee : Photon.PunBehaviour {
 			transform.position = position;
 			if (position.y <= 0f && velocity.y <= 0f) {  // hit ground
 				velocity.y *= -0.5f;  // bounce back
+				velocity.x *= 0.5f;  // slow down
+				velocity.z *= 0.5f;  // slow down
 			}
+			transform.Rotate(Vector3.up, 1800f * Time.deltaTime);
 		}
 	}
 
