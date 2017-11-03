@@ -72,3 +72,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/SceneQuad.unity
     guid: 6ab51afc2a5624284acbc4bc709d3cbb
+  - enabled: 0
+    path: Assets/PUNVoice/DemoVoice/DemoVoice-PushToTalk-Scene.unity
+    guid: 6a4c81dac0957ce4bb7ae64fc26dc5be

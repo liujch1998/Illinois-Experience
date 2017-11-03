@@ -28,6 +28,7 @@ public class Frisbee : Photon.PunBehaviour {
 				velocity.y *= -0.5f;  // bounce back
 				velocity.x *= 0.5f;  // slow down
 				velocity.z *= 0.5f;  // slow down
+				if (velocity.y < 0.01f) PhotonNetwork.Destroy(gameObject);
 			}
 			transform.Rotate(Vector3.up, 1800f * Time.deltaTime);
 		}
