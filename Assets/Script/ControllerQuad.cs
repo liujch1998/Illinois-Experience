@@ -22,7 +22,7 @@ public class ControllerQuad : Photon.PunBehaviour {
 	void Update () {
 		// sync Avatar_obs position with camera
 		if (avatar_obs && center_eye) {
-			avatar_obs.transform.position = center_eye.position;
+			avatar_obs.transform.position = center_eye.position + new Vector3(0.45f, 0f, 0f);
 		}
 	}
 
